@@ -14,42 +14,36 @@
 
 /* EVENT LISTENER WITH SERVER PORT */
 
-let http = require('http'); //require le Module 'http'
-let fs = require('fs');
-let url = require('url');
-const EventEmitter = require('events');
+let express = require('express');
 
-let App = { //crée l'objet APP
-  start: function(port) //crée start et la fonction prend en parametres le port
-  {
-    let emitter = new EventEmitter(); //crée un nouvel evenement
+let app = express();
 
-    let server = http.createServer((request, response) => { // crée un serveur
-
-      response.writeHead(200, { //quand tout ce passe bien
-        'Content-type': 'text/html; charset-utf8' //mets le text en encodage utf-8
-      });
-
-      if(request.url === '/') //si l'url arrive a un '/'
-      {
-        emitter.emit('root', response); //c'est qu'on est a la racine du projet
-      }
-
-      response.end();
-
-    }).listen(port) //Si le port est accessible on execute le code a l'interieur de la fonction start
-
-    return emitter;
-  }
-}
-
-let app = App.start(8080); //crée une varible de la fonction app.start en parametre le port 8080
-
-app.on('root', function(response)
+app.get('/', (request, response) =>
 {
-  console.log();
-  response.write('Je suis a la racine');
-});
+  response.send("Hello World");
+})
+
+app.get('/demo', (request, response) =>
+{
+  response.send("Tu est sur la demo");
+})
+
+app.listen(8080);
+
+// let app = require('./app').start(8080); //crée une varible de la fonction app.start en parametre le port 8080
+//
+// let demo = require('./hello') // dans le dossier courrant charge le fichier hello
+//
+// demo.hello();
+//
+// demo.aurevoir();
+//
+//
+// app.on('root', function(response)
+// {
+//   console.log();
+//   response.write('Je suis a la racine');
+// });
 
 /* BEGIN WITH NODE JS CREATE A SERVER */
 
